@@ -1,0 +1,378 @@
+﻿@inject SignInManager<User> signInManager;
+@inject UserManager<User> userManager;
+@model AppealsViewModel;
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+
+    var userId = userManager.GetUserId(User);
+    User user_id = await userManager.FindByIdAsync(userId);
+}
+
+<div class="pagetitle text-center">
+    <h1>Welcome to School Online Applications</h1>
+    <hr /><br />
+</div>
+<!-- End Page Title -->
+
+<section class="section dashboard">
+
+    <div class="row">
+        <div class="col-sm-10 text-center center-c">
+            <h3>Online Applications & Appeals</h3>
+            <br />
+            <h6>Make Your Child's next step a Priority, Apply online and reserve your child a space for the upcoming year.</h6>
+            <hr />
+        </div>
+    </div>
+
+    @if(signInManager.IsSignedIn(User))                                                
+    {
+        if(await userManager.IsInRoleAsync(user_id,"Admins"))
+        {
+            <div class="row">
+
+                <!-- Left side columns -->
+                <div class="col-lg-center-c">
+                    <div class="row">
+
+                        <!-- Applicant Card -->
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+
+                            <div class="card info-card customers-card">
+                            
+                                <div class="card-body">
+                                    <h5 class="card-title">Applications <span>| This Year</span></h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-people"></i>
+                                        </div>
+
+                                        @{
+                                            int appCount = Model.Applications.Count();
+                                            int appealCount = Model.Appeals.Count();
+                                        }
+
+                                        <div class="ps-3">
+                                            <h6>@appCount</h6>
+                                            
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- End Customers Card -->
+
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+
+                            <div class="card info-card customers-card">
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">Appeals <span>| This Year</span></h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                          
+                                            <i class="bi bi-file-arrow-up"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6>@appealCount</h6>
+                                            
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- End Recent Activity -->
+
+                        <!-- Reports -->
+                        <div class="col-12">
+                            <div class="card">
+
+                                <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Filter</h6>
+                                        </li>
+
+                                        <li><a class="dropdown-item" href="#">Today</a></li>
+                                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                    </ul>
+                                </div>
+
+                                 @{
+                                    var Apps = from apps in Model.Applications                                                                      
+                                                join status in Model.Statuses
+                                                on apps.StatusID equals status.StatusID
+                                                join acc in Model.Accounts
+                                                on apps.AccountID equals acc.AccountID
+                                                join school in Model.Schools
+                                                on apps.SchoolID equals school.SchoolID
+
+                                                select new {
+                                                    apps.ApplicationID,
+                                                    apps.Name,
+                                                    apps.Surname,
+                                                    apps.ApplicationDate,
+                                                    apps.ApplicationRef,
+                                                    apps.AccountID,    
+                                                    apps.DOB,                          
+                                                    status.StatusName,
+                                                    school.SchoolName
+                                                    
+                                                };
+
+                                    }
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Applications <span>/Today</span></h5>
+
+                                    <table class="table">
+                                        <thead>
+                                            <th>#</th>
+                                            <th>Applicant</th>
+                                            <th>Ref</th>
+                                            <th>Date</th>
+                                            <th>School</th>
+                                            <th>Status</th>
+                                        </thead>
+                                        <tbody>
+                                            @if( Model.Applications != null && Model.Applications.Count() != 0)
+                                            {
+                                                @foreach (var item in Apps)
+                                                {
+                                                    <tr>
+                                                        <td>@item.ApplicationID</td>
+                                                        <td>@item.Name @item.Surname</td>
+                                                        <td>@item.ApplicationRef</td>
+                                                        <td>@item.ApplicationDate</td>
+                                                        <td>@item.SchoolName</td>
+                                                        <td>@item.StatusName</td>
+
+                                                    </tr>
+
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- End Reports -->
+
+                         @* <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <h5 class="card-title">Applications</h5>                
+                                    <canvas id="application_chart"></canvas>                    
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <h5 class="card-title">Appeals</h5>
+                                    <canvas id="appeals_chart"></canvas>                    
+                                </div>
+                            </div>
+                        </div> *@
+
+                     
+
+                    </div>
+                </div>
+                <!-- End Left side columns -->
+
+                <!-- Right side columns -->
+                <div class="col-lg-12 center-c">
+
+                    
+                   
+
+                    <!-- News & Updates Traffic -->
+                    <div class="card">
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li class="dropdown-header text-start">
+                                    <h6>Filter</h6>
+                                </li>
+
+                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">Appeals <span>| Today</span></h5>
+
+
+                        </div>
+                    </div>
+                    <!-- Appeals chart -->
+
+                    <div class="card">
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li class="dropdown-header text-start">
+                                    <h6>Filter</h6>
+                                </li>
+
+                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                        </div>
+
+                          @{
+
+                        var appealApps = from appeals in Model.Appeals 
+                                    join apps in Model.Applications
+                                    on appeals.ApplicationID equals apps.ApplicationID
+                                    join appReason in Model.AppealReasons
+                                    on appeals.AppealReasonID equals appReason.AppealReasonID
+                                    join status in Model.Statuses
+                                    on appeals.StatusID equals status.StatusID
+                                    select new {
+                                        appeals.ApplicationID,
+                                        appeals.AppealID,
+                                        appeals.AppealDate,
+                                        appeals.AppealReasonID,
+                                        appeals.StatusID,
+                                        apps.AccountID,
+                                        apps.Name,
+                                        appReason.AppealReasonName,
+                                        status.StatusName
+
+                                    };
+
+                    }
+
+
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">Recent Appeals <span>| Today</span></h5>
+
+                             <table class="table">
+                                <thead>
+                                    <th>#</th>                        
+                                    <th>Applicant</th>
+                                    <th>Appeal Date</th>
+                                    <th>Appeal Reason</th>
+                                    <th>Appeal Status</th>
+                                    <th class="text-info">Action</th>
+                                </thead>
+                                <tbody>
+                                     @if( Model.Appeals != null && Model.Appeals.Count() != 0)
+                                {
+                                    @foreach (var item in appealApps)
+                                    {
+                                        <tr>
+                                            <td>@item.AppealID</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.AppealDate.ToShortDateString()</td>
+                                            <td>@item.AppealReasonName</td>
+                                            <td>@item.StatusName</td>
+                                            <td class="text-center">
+                                                <form id="frm1" asp-action="Delete" method="post">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                                            
+                                                            <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                                <input type="hidden" name="AppealID" value="@item.AppealID" />
+                                                                <button type="submit" class="btn btn-sm"  >
+                                                                    <i  class="bi-trash" style="color: #A71930;" aria-hidden="true"></i>                                                                                                
+                                                                </button>
+                                                                
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                </tbody>
+
+                </table>
+
+
+                        </div>
+                    </div>
+                    <!-- Appeals Table -->
+
+                </div>
+                <!-- End Right side columns -->
+
+            </div>
+        }
+    }
+    
+    @if(signInManager.IsSignedIn(User))                                              
+    {
+        if(await userManager.IsInRoleAsync(user_id,"Applicant"))
+        {
+            <div class="row">
+                <div class="col-lg-12 center-c">
+
+                    <div class="card">
+                        <div class="card-body" style="background-image: url(~/img/kids1.jpg');">
+                            <h5 class="card-title">Applicant Home Page</h5>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    
+                                </div>
+
+                            </div>
+                        
+                        </div>
+                    
+                    </div>
+                </div>
+            </div> 
+           <div class="row align-items-top">
+                <div class="col-lg-12">
+                        <!-- Card with an image overlay -->
+                        <div class="card">
+                                <img src="~/img/background.jpg" class="card-img-top" alt="Kids">
+                                <div class="card-img-overlay">
+                                <h5 class="card-title">We have connected private entities to be constant check of the selected school</h5>
+                                <p class="card-text">For un-approved applications, you may contact district offices by making an 
+                                    appeal for your application, your child will be located to the best school fitting the conditions of the appeal. </p>
+                                </div>
+                        </div><!-- End Card with an image overlay -->
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title">Applications and Appeal dates</h5>
+                            <br />
+                            <h6>Please see downloadable booklet for year-to-year opening and closing dates for applications and appeals.</h6>
+                            </div>
+                        </div>
+                </div>
+            </div>  
+
+            
+        }
+    }      
+
+</section>
+
+
+
+
+ 

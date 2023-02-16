@@ -1,0 +1,97 @@
+@model SchoolViewModel
+
+@inject SignInManager<User> signInManager;
+@inject UserManager<User> userManager;
+
+@{
+    ViewData["Title"] = "Manage School";
+    Layout = "_Layout";
+
+    var userId = userManager.GetUserId(User);
+    User user_id = await userManager.FindByIdAsync(userId);
+}
+
+<div class="pagetitle">
+    <h1>Manage School</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item active">Manage School</li>
+        </ol>
+    </nav>
+</div>
+
+<section>
+     <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Manage School</h5>
+
+                <table class="table">
+                    <thead>
+                        <th>#</th>                        
+                        <th>School Name</th>
+                        <th>School Contact</th>
+                        <th>School Clerk</th>
+                        <th>School Address</th>
+                        <th class="text-info">Action</th>
+                    </thead>
+                    <tbody>
+
+                    @{
+                        string UserID_ = "";
+
+                        if((signInManager.IsSignedIn(User)))                                                
+                        {
+                            if(Model.Schools != null && Model.Schools.Count() != 0)
+                            {
+                                foreach (var item in Model.Schools.Where(c => c.Id == userId))
+                                {
+                                    UserID_ = item.Id;
+                                }
+                            }
+                        }
+                    }                    
+               
+
+                    @if( Model.Schools != null && Model.Schools.Count() != 0)
+                    {
+                        @foreach (var item in Model.Schools)
+                        {
+                            <tr>
+                                <td>@item.SchoolID</td>
+                                <td>@item.SchoolName</td>
+                                <td>@item.SchoolContact</td>
+                                <td>@item.SchoolClerk</td>
+                                <td>@item.StreetNumber @item.StreetName, @item.City </td>                                
+                                <td class="text-center">
+                                    <form id="frm1" asp-action="Delete" method="post">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                
+                                                <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                    <input type="hidden" name="SchoolID" value="@item.SchoolID" />
+                                                    <button type="submit" class="btn btn-sm"  >
+                                                        <i  class="bi-trash" style="color: #A71930;" aria-hidden="true"></i>                                                                                                
+                                                    </button>
+                                                    
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+
+                </table>
+
+            </div>
+          </div>
+
+        </div>
+</section>

@@ -1,0 +1,124 @@
+@model UserAdminViewModel
+@{
+    Layout="";
+    ViewData["Title"] = "Register";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>@ViewData["Title"] - SchoolApp</title>
+
+    <!--CUSTOM CSS-->
+    @* <link rel="stylesheet" href="~/css/site.css" /> *@
+    <link rel="stylesheet" href="~/css/templateStyle.css" />
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!--JS Columns-->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!--ICONS-->
+    <link href="~/lib/bootstrap/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+     <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <main>
+    <div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <img src="assets/img/logo.png" alt="">
+                  <span style="text-decoration: none;" class="d-none d-lg-block">SchoolApp</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                    <p class="text-center small">Enter your personal details to create account</p>
+                  </div>
+
+                  <form asp-action="Create" method="post" class="row g-3 needs-validation" novalidate>
+                    <div class="col-12">
+
+                      <div asp-validation-summary="All"></div>
+
+                      <label asp-for="@Model.CreateModel.Name" class="form-label">Your Name</label>
+                      <input asp-for="@Model.CreateModel.Name" type="text" class="form-control" id="yourName" required>
+                      <div class="invalid-feedback">Please, enter your name!</div>
+
+                    </div>
+
+                    <div class="col-12">
+                      <label asp-for="@Model.CreateModel.Email" class="form-label">Your Email</label>
+                      <input asp-for="@Model.CreateModel.Email" type="email" class="form-control" id="yourEmail" required>                       
+                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                    </div>
+                    
+                    <div class="col-12">
+                      <label asp-for="@Model.CreateModel.Password" class="form-label">Password</label>
+                      <input asp-for="@Model.CreateModel.Password" type="password" class="form-control" id="yourPassword" required>
+                       
+                      <div class="invalid-feedback">Please enter your password!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="~/Home/Privacy">terms and conditions</a></label>
+                        <div class="invalid-feedback">You must agree before submitting.</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Already have an account? <a href="~/UserAccount/Login">Log in</a></p>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+
+             
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main><!-- End #main -->
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" ></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+@model AppealViewModel
+
+@{
+    ViewData["Title"] = "New Appeal";
+    Layout = "_Layout";
+}
+
+<div class="pagetitle">
+    <h1>Make New Appeal</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item"><a href="~/Application/Index">Application</a></li>
+            <li class="breadcrumb-item active">New Appeal</li>
+        </ol>
+    </nav>
+</div>
+
+<section>
+     <div class="col-lg-10">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Did not get admitted, Apply for an Appeal</h5>
+
+                <form asp-action="Appeal" method="post">
+                    <div class="row mb-3">  
+                        <label asp-for="ApplicationID" class="col-md-4 col-lg-3 col-form-label">Select Application</label>
+                        <div class="col-md-8 col-lg-9"> 
+                            <div><span asp-validation-for="ApplicationID" class="text-danger"></span></div>    
+                            <select class="form-control form-select" asp-for="ApplicationID"  asp-items="Model.Applications" >
+                                <option>Select Application</option>     
+                                <option value=""></option>                                                                            
+                            </select>
+                        </div>
+                    </div> 
+               
+                
+                    <div class="row mb-3">  
+                        <label asp-for="AppealReasonID" class="col-md-4 col-lg-3 col-form-label">Select Appeal Reason</label>
+                        <div class="col-md-8 col-lg-9"> 
+                            <div><span asp-validation-for="AppealReasonID" class="text-danger"></span></div>    
+                            <select class="form-control form-select" asp-for="AppealReasonID" asp-items="Model.AppealReasons"  >
+                                <option>Select Appeal Reason</option>     
+                                <option value=""></option>                                                                            
+                            </select>
+                        </div>
+                    </div>  
+
+                    <div class="row mb-3">
+                        <label for="inputDate" class="col-md-4 col-lg-3 col-form-label">Appea for Year</label>
+                        <div class="col-md-8 col-lg-3">
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Please Indicate Reason for Appeal</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" style="height: 100px"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputDate" class="col-md-4 col-lg-3 col-form-label">Application for </label>
+                      
+                        <div class="col-sm-10 col-lg-9">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Appeal for Applicant:</h5>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-3 col-form-label">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-3 col-form-label">Surname</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-3 col-form-label">ID Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-3 col-form-label">Phone</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-3 col-form-label">Email</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>                                                         
+                
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit Applicant</button>                 
+                        <a href="~/Home/Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+                   
+            </div>
+          </div>
+
+        </div>
+</section>
+@* 
+@{
+    var appId = 0;
+}
+
+<input value="@selectedReport" type="text" />
+
+<script>    
+    function changeReport(dropDownList) {
+        var selectedReport = dropDownList.options[dropDownList.selectedIndex].value;
+        alert(selectedReport);
+    }
+</script> 
+
+<select id="SelectedReport" class="Check SelectOption" onchange="changeReport(this)">
+    <option value="foo">foo</option>
+    <option value="bar">bar</option>
+    <option value="baz">baz</option>
+</select> 
+
+@Html.Hidden("myVar", 0);
+
+<script>
+    function setMyValue(value) {
+        $('#myVar').val(value);       
+    }
+</script> *@

@@ -1,0 +1,138 @@
+@model ApplicationsViewModel
+
+@inject SignInManager<User> signInManager;
+@inject UserManager<User> userManager;
+
+
+@{
+    ViewData["Title"] = "All Application";
+    Layout = "_Layout";
+
+    var userId = userManager.GetUserId(User);
+    User user_id = await userManager.FindByIdAsync(userId);
+}
+
+<div class="pagetitle">
+    <h1>Application Statuses</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item active">Applications Statuses</li>
+        </ol>
+    </nav>
+</div>
+
+<section>
+     <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Manage Applications</h5>
+
+                <table class="table">
+                    <thead>
+                        <th>#</th>                        
+                        <th>Child</th>                        
+                        <th>Application Ref</th>
+                        <th class="text-info">Status</th>                        
+                    </thead>
+                    <tbody>
+
+                    @{
+                        int AccountID_ = 0;
+
+                        if((signInManager.IsSignedIn(User)))                                                
+                        {
+                            if(Model.Accounts != null && Model.Accounts.Count() != 0)
+                            {
+                                foreach (var item in Model.Accounts.Where(c => c.Id == userId))
+                                {
+                                    AccountID_ = item.AccountID;
+                                }
+                            }
+                        }
+                    } 
+
+                    @{
+                           var Apps = from apps in Model.Applications                                                                      
+                                    join status in Model.Statuses
+                                    on apps.StatusID equals status.StatusID
+                                    join acc in Model.Accounts
+                                    on apps.AccountID equals acc.AccountID
+                                    join school in Model.Schools 
+                                    on apps.SchoolID equals school.SchoolID
+                                    select new {
+                                        apps.ApplicationID,
+                                        apps.Name,
+                                        apps.Surname,
+                                        apps.ApplicationDate,
+                                        apps.ApplicationRef,
+                                        apps.AccountID,    
+                                        apps.DOB,                          
+                                        status.StatusName,
+                                        school.SchoolName,
+                                        school.Id                                        
+                                    };
+
+                    }
+
+
+                     @if(await userManager.IsInRoleAsync(user_id,"Applicant"))
+                    {
+                        @if( Model.Applications != null && Model.Applications.Count() != 0)
+                        {
+                            @foreach (var item in Apps.Where(c => c.AccountID == AccountID_))
+                            {
+                       
+                                <tr>
+                                    <td>@item.ApplicationID</td>
+                                    <td>@item.Name @item.Surname</td>                                                       
+                                    <td>@item.ApplicationRef</td>
+                                    <td>@item.StatusName</td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                     @if(await userManager.IsInRoleAsync(user_id,"SchoolAdmin"))
+                    {
+                        @if( Model.Applications != null && Model.Applications.Count() != 0)
+                        {
+                            @foreach (var item in Apps.Where(c => c.Id == user_id.Id))
+                            {
+                       
+                                <tr>
+                                    <td>@item.ApplicationID</td>
+                                    <td>@item.Name @item.Surname</td>                                                       
+                                    <td>@item.ApplicationRef</td>
+                                    <td>@item.StatusName</td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                     @if(await userManager.IsInRoleAsync(user_id,"Admins"))
+                    {
+                        @if( Model.Applications != null && Model.Applications.Count() != 0)
+                        {
+                            @foreach (var item in Apps)
+                            {
+                       
+                                <tr>
+                                    <td>@item.ApplicationID</td>
+                                    <td>@item.Name @item.Surname</td>                                                       
+                                    <td>@item.ApplicationRef</td>
+                                    <td>@item.StatusName</td>
+                                </tr>
+                            }
+                        }
+                    }
+                    </tbody>
+
+                </table>
+
+            </div>
+          </div>
+
+        </div>
+</section>

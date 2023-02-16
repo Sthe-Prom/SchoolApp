@@ -1,0 +1,77 @@
+@model ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Update Application";
+    Layout = "_Layout";
+}
+
+<div class="pagetitle">
+    <h1>Edit Application Status</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item active">Update Application</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+   
+    <section class="section">
+     <form asp-action="Edit" method="post" enctype="multipart/form-data" >
+
+            <div class="row">
+                <div class="col-lg-6 center-c">
+                    <div asp-validation-summary="All"></div>
+                    <div class="row mb-3">
+                        <label  class="col-md-12 col-lg-12 col-form-label">Status</label>
+                        <div class="col-md-12 col-lg-12">
+                            <div><span class="text-danger"></span></div>    
+                            <select class="form-control" asp-for="StatusID" asp-items="@Model.StatusList" >
+                                <option selected>Select Status</option>
+                                <option value=""></option>                                      
+                            </select>                                
+                        </div>
+                    </div>
+
+                    <input asp-for="Name" type="text" class="form-control" >
+                    <input asp-for="Surname" type="text" class="form-control">
+                    <input asp-for="Gender" type="text" class="form-control" >
+                    <input asp-for="Cell" type="text" class="form-control" >
+                    <input asp-for="Disability" type="text" class="form-control" >
+                    <input asp-for="IDNumber" type="text" class="form-control" >
+                    <input asp-for="DOB" type="text" class="form-control" >
+                   
+                    <input asp-for="MedicalAid" type="text" class="form-control" >
+                    <input asp-for="ApplicationDate" type="text" class="form-control">
+                    <input asp-for="ApplicationRef" type="text" class="form-control">
+                    <input asp-for="SchoolGrade" type="text" class="form-control" >
+                    <input asp-for="AccountID" type="text" class="form-control" >
+                    <input asp-for="StatusID" type="text" class="form-control" id="IDNumber">
+                    <input asp-for="SchoolID" type="text" class="form-control">
+
+                    <div class="row mb-3">
+                        <label asp-for="BirthCertificate" class="col-form-label">Birth Certificate</label>
+                        <div class="col-md-12 custom-file">
+                            <input asp-for="BirthCertificate" accept="application/pdf" class="custom-file-input form-control" id="customFile" type="file" />                                                         
+                        </div>
+                        <span asp-validation-for="BirthCertificate" class="text-danger"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="SchoolReport" class="col-form-label">Latest School Report</label>
+                        <div class="col-md-12 custom-file">
+                            <input asp-for="SchoolReport" accept="application/pdf" class="custom-file-input form-control" id="customFile" type="file" />                                                           
+                        </div>
+                        <span asp-validation-for="SchoolReport" class="text-danger"></span>
+                    </div>
+
+
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Submit Applicant Changes</button>                 
+                    <a href="~/Home/Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>            
+        </form>
+    </section>
+

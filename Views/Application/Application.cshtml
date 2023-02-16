@@ -1,0 +1,210 @@
+@model ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Application";
+    Layout = "_Layout";
+
+}
+
+<div class="pagetitle">
+    <h1>New Application</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item active">Application</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+   
+    <section class="section">
+
+        <form asp-action="Application" method="post" enctype="multipart/form-data" >
+
+            <div class="row">
+                <div class="col-lg-6">
+                    
+                    <div class="card">
+                        <div class="card-body">
+                        <h5 class="card-title">Applicant Personal Details</h5>
+
+                            <div asp-validation-summary="All"></div>
+
+                            <div class="row mb-3">
+                                <label asp-for="Name" class="col-form-label">Name(s)</label>
+                                <div class="col-md-12 col-lg-12">
+                                    <input asp-for="Name" type="text" class="form-control" id="Name" >
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label asp-for="Surname" class="col-form-label">Surname</label>
+                                <div class="col-md-12 col-lg-12">
+                                    <input asp-for="Surname" type="text" class="form-control" id="Surname">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label  asp-for="Gender" class="col-form-label">Gender</label>
+                                <div class="col-sm-12">
+                                    <select class="form-select" asp-for="Gender">
+                                        <option selected>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Non-Binary">Non-Binary</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label asp-for="IDNumber" class="col-form-label">ID Number</label>
+                                <div class="col-md-12 col-lg-12">
+                                    <input asp-for="IDNumber" type="text" class="form-control" id="IDNumber">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label asp-for="DOB" class="col-form-label">Date of Birth</label>
+                                <div class="col-md-12 col-lg-12">
+                                    <input asp-for="DOB" type="date" class="form-control" id="DOB">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label asp-for="Cell" class="col-form-label">Phone</label>
+                                <div class="col-md-12 col-lg-12">
+                                    <input asp-for="Cell" type="text" class="form-control" id="Cell">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-12 pt-0"></legend>
+                                <div class="col-sm-12">
+
+                                    <div class="form-check">
+                                    <input class="form-check-input" asp-for="MedicalAid" type="checkbox" >
+                                    <label class="form-check-label" asp-for="MedicalAid">
+                                        Medical Aid
+                                    </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                    <input class="form-check-input" asp-for="Disability" type="checkbox">
+                                    <label class="form-check-label" asp-for="MedicalAid">
+                                        Disability
+                                    </label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                           
+                            @* 
+                            @{
+                                string AppRef = Model.ApplicationDate.ToShortDateString().Substring(0, 4) + Model.Name.Substring(0, 2) + 
+                                                Model.Surname.Substring(0,2) + Model.Cell.Substring(4);
+                            } *@
+
+                            @* @{
+                                int AccountID_ = 0;
+
+                                if((signInManager.IsSignedIn(User)))                                                
+                                {
+                                    if(Model.Accounts != null && Model.Accounts.Count() != 0)
+                                    {
+                                        foreach (var item in Model.Accounts.Where(c => c.Id == userId))
+                                        {
+                                            AccountID_ = item.AccountID;
+                                        }
+                                    }
+                                }
+                            }   *@
+
+                            <input asp-for="ApplicationRef" type="hidden" value="Ref">
+
+                            @* <input asp-for="StatusID" type="hidden" value="1"> *@
+                            @* <input asp-for="AccountID" type="hidden" value="2"> *@
+
+                        </div>
+                    </div>   
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Attachments</h5>
+
+                            <div class="row mb-3">
+                                <label asp-for="BirthCertificate" class="col-form-label">Birth Certificate</label>
+                                <div class="col-md-12 custom-file">
+                                    <input asp-for="BirthCertificate" accept="application/pdf" class="custom-file-input form-control" id="customFile" type="file" />                               
+                                    @* <label class="custom-file-label" for="customFile">Choose file</label> *@
+                                </div>
+                                <span asp-validation-for="BirthCertificate" class="text-danger"></span>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label asp-for="SchoolReport" class="col-form-label">Latest School Report</label>
+                                <div class="col-md-12 custom-file">
+                                    <input asp-for="SchoolReport" accept="application/pdf" class="custom-file-input form-control" id="customFile" type="file" />                               
+                                    @* <label class="custom-file-label" for="customFile">Choose file</label> *@
+                                </div>
+                                <span asp-validation-for="SchoolReport" class="text-danger"></span>
+                            </div>
+                    
+                        </div>
+                    </div>
+
+                     <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Schools</h5>
+
+                            <div class="row mb-3">
+                                <label sp-for="SchoolGrade" class="col-form-label">School Grade</label>
+                                <div class="col-sm-12">
+                                    <select class="form-select" asp-for="SchoolGrade">
+                                        <option selected>Select School Grade</option>
+                                        <option value="Grade 1">Grade 1</option>
+                                        <option value="Grade 2">Grade 2</option>
+                                        <option value="Grade 3">Grade 3</option>
+                                        <option value="Grade 4">Grade 4</option>
+                                        <option value="Grade 5">Grade 5</option>
+                                        <option value="Grade 6">Grade 6</option>
+                                        <option value="Grade 7">Grade 7</option>
+                                        <option value="Grade 8">Grade 8</option>
+                                        <option value="Grade 9">Grade 9</option>
+                                        <option value="Grade 10">Grade 10</option>
+                                        <option value="Grade 11">Grade 11</option>
+                                        <option value="Grade 12">Grade 12</option>
+                                        
+                                    </select>
+                                </div>
+                            </div>
+
+                                <div class="row mb-3">
+                                    <label asp-for="SchoolID" class="col-md-12 col-lg-12 col-form-label">School</label>
+                                    <div class="col-md-12 col-lg-12">
+                                        <div><span class="text-danger"></span></div>    
+                                        <select class="form-control" asp-for="SchoolID" asp-items="Model.SchoolList"   >
+                                            <option selected>Select School</option>
+                                            <option id="" value=""></option>                                      
+                                        </select>                                
+                                    </div>
+                                </div>
+
+                                @* <input asp-for="SchoolID" class="custom-file-input form-control"  type="hodden" value="1" />  *@
+                        
+                            </div>
+                    </div>
+
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Submit Applicant</button>                 
+                    <a href="~/Home/Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>            
+        </form>
+    </section>
+

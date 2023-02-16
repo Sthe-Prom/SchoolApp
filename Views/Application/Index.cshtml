@@ -1,0 +1,230 @@
+@model ApplicationsViewModel
+
+@inject SignInManager<User> signInManager;
+@inject UserManager<User> userManager;
+
+
+@{
+    ViewData["Title"] = "All Application";
+    Layout = "_Layout";
+
+    var userId = userManager.GetUserId(User);
+    User user_id = await userManager.FindByIdAsync(userId);
+}
+
+<div class="row">
+
+    <div class="col-sm-12">
+
+
+        <div class="jumbotron">
+            <div class="bg-green">
+                <h1>@ViewData["Feedback"]</h1>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="pagetitle">
+    <h1>Manage Application</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item active">Manage Applications</li>
+        </ol>
+    </nav>
+</div>
+
+<section>
+     <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Manage Applications</h5>
+
+                <table class="table">
+                    <thead>
+                        <th>#</th>                        
+                        <th>Child</th>
+                        <th>School Name</th>
+                        <th>Application Date</th>
+                        <th>Application Ref</th>
+                        <th>Status</th>
+                        <th class="text-info">Action</th>
+                    </thead>
+                    <tbody>
+
+                    @{
+                        int AccountID_ = 0;
+
+                        if((signInManager.IsSignedIn(User)))                                                
+                        {
+                            if(Model.Accounts != null && Model.Accounts.Count() != 0)
+                            {
+                                foreach (var item in Model.Accounts.Where(c => c.Id == user_id.Id))
+                                {
+                                    AccountID_ = item.AccountID;
+                                }
+                            }
+                        }
+                    } 
+
+                    @{
+                          var Apps = from apps in Model.Applications                                                                      
+                                    join status in Model.Statuses
+                                    on apps.StatusID equals status.StatusID
+                                    join acc in Model.Accounts
+                                    on apps.AccountID equals acc.AccountID
+                                    join school in Model.Schools 
+                                    on apps.SchoolID equals school.SchoolID
+                                    select new {
+                                        apps.ApplicationID,
+                                        apps.Name,
+                                        apps.Surname,
+                                        apps.ApplicationDate,
+                                        apps.ApplicationRef,
+                                        apps.AccountID,    
+                                        apps.DOB,                          
+                                        status.StatusName,
+                                        school.SchoolName,
+                                        school.Id                                        
+                                    };
+
+                    }
+
+
+
+                    @if(await userManager.IsInRoleAsync(user_id,"Applicant"))
+                    {
+                        @if( Model.Applications != null && Model.Applications.Count() != 0)
+                        {
+                            @foreach (var item in Apps.Where(c => c.AccountID == AccountID_))
+                            {
+                                <tr>
+                                    <td>@item.ApplicationID</td>                                
+                                    <td>@item.Name @item.Surname</td>
+                                    <td>@item.SchoolName</td>
+                                    <td>@item.ApplicationDate</td>                             
+                                    <td>@item.ApplicationRef</td>
+                                    <td>@item.StatusName</td>
+                                    <td class="text-center">
+                                        <form id="frm1" asp-action="Delete" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    @* <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                        <a asp-action="Edit" class="btn btn-sm" asp-route-ApplicationID="@item.ApplicationID">
+                                                            <i class="fa fa-edit" style="color: #00675A;"></i>
+                                                        </a>
+                                                    </span> *@
+                                                    <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                        <input type="hidden" name="ApplicationID" value="@item.ApplicationID" />
+                                                        <button type="submit" class="btn btn-sm"  >
+                                                            <i  class="bi-trash" style="color: #A71930;" aria-hidden="true"></i>                                                                                                
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            @* <span><input type="submit" class="" /><i class="fa fa-trash" aria-hidden="true"></i> </span> *@
+                                            @* <a href="#" onclick="document.getElementById('frm1').submit();"><i class="fa fa-trash" aria-hidden="true"></i></a> *@
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+
+                      @if(await userManager.IsInRoleAsync(user_id,"SchoolAdmin"))
+                    {
+                        @if( Model.Applications != null && Model.Applications.Count() != 0)
+                        {
+                            @foreach (var item in Apps.Where(c => c.Id == user_id.Id))
+                            {
+                                <tr>
+                                    <td>@item.ApplicationID</td>                                
+                                    <td>@item.Name @item.Surname</td>
+                                    <td>@item.SchoolName</td>
+                                    <td>@item.ApplicationDate</td>                             
+                                    <td>@item.ApplicationRef</td>   
+                                    <td>@item.StatusName</td>                                   
+                                    <td class="text-center">
+                                        <form id="frm1" asp-action="Delete" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                        <a asp-action="Edit" class="btn btn-sm" asp-route-ApplicationID="@item.ApplicationID">
+                                                            <i class="bi-pencil" style="color: #00675A;"></i>
+                                                        </a>
+                                                    </span>
+                                                    <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                        <input type="hidden" name="ApplicationID" value="@item.ApplicationID" />
+                                                        <button type="submit" class="btn btn-sm" >
+                                                            <i  class="bi-trash" style="color: #A71930;" aria-hidden="true"></i>                                                                                                
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            @* <span><input type="submit" class="" /><i class="fa fa-trash" aria-hidden="true"></i> </span> *@
+                                            @* <a href="#" onclick="document.getElementById('frm1').submit();"><i class="fa fa-trash" aria-hidden="true"></i></a> *@
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                    @if(await userManager.IsInRoleAsync(user_id,"Admins"))
+                    {
+                        @if( Model.Applications != null && Model.Applications.Count() != 0)
+                        {
+                            @foreach (var item in Apps)
+                            {
+                                <tr>
+                                    <td>@item.ApplicationID</td>                                
+                                    <td>@item.Name @item.Surname</td>
+                                    <td>@item.SchoolName</td>
+                                    <td>@item.ApplicationDate</td>                             
+                                    <td>@item.ApplicationRef</td>   
+                                    <td>@item.StatusName</td>                                   
+                                    <td class="text-center">
+                                        <form id="frm1" asp-action="Delete" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                        <a asp-action="Edit" class="btn btn-sm" asp-route-ApplicationID="@item.ApplicationID">
+                                                            <i class="bi-pencil" style="color: #00675A;"></i>
+                                                        </a>
+                                                    </span>
+                                                    <span class="col-sm-4 col-md-4 col-lg-4" style="margin: 0 auto; float: none;">
+                                                        <input type="hidden" name="ApplicationID" value="@item.ApplicationID" />
+                                                        <button type="submit" class="btn btn-sm" >
+                                                            <i  class="bi-trash" style="color: #A71930;" aria-hidden="true"></i>                                                                                                
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            @* <span><input type="submit" class="" /><i class="fa fa-trash" aria-hidden="true"></i> </span> *@
+                                            @* <a href="#" onclick="document.getElementById('frm1').submit();"><i class="fa fa-trash" aria-hidden="true"></i></a> *@
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+          </div>
+
+        </div>
+</section>

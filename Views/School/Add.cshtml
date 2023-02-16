@@ -1,0 +1,101 @@
+@model SchoolViewModel
+
+@{
+    ViewData["Title"] = "Add School";
+    Layout = "_Layout";
+}
+
+<div class="pagetitle">
+    <h1>Add School</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item active">School</li>
+        </ol>
+    </nav>
+</div>
+
+<section>
+     <div class="col-lg-8">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Add School</h5>
+                <form asp-action="Add" method="post">
+
+                    <div class="form-group">  
+                        <label asp-for="@Model.School.Id">Users</label> 
+                        <div><span asp-validation-for="@Model.School.Id" class="text-danger"></span></div>    
+                        <select class="form-control" asp-for="@Model.School.Id" asp-items="Model.Users"  >
+                            <option value="">Select User</option>                                                                            
+                        </select>
+                    </div> 
+
+                  <div class="row mb-3">
+                      <label asp-for="@Model.School.SchoolName" class="col-form-label">School Name</label>
+                      <div class="col-md-12">
+                          <input asp-for="@Model.School.SchoolName" class="form-control" type="text" />           
+                      </div>
+                      <span asp-validation-for="@Model.School.SchoolName" class="text-danger"></span>
+                  </div>
+
+                  <div class="row mb-3">
+                      <label asp-for="@Model.School.SchoolContact" class="col-form-label">School Contact</label>
+                      <div class="col-md-12">
+                          <input asp-for="@Model.School.SchoolContact" class="form-control" type="text" />           
+                      </div>
+                      <span asp-validation-for="@Model.School.SchoolContact" class="text-danger"></span>
+                  </div>
+
+                  <div class="row mb-3">
+                      <label asp-for="@Model.School.SchoolClerk" class="col-form-label">School Clerk</label>
+                      <div class="col-md-12">
+                          <input asp-for="@Model.School.SchoolClerk" class="form-control" type="text" />           
+                      </div>
+                      <span asp-validation-for="@Model.School.SchoolClerk" class="text-danger"></span>
+                  </div>
+
+                  <div class="col-md-12">
+                     <label asp-for="@Model.School.StreetName" class="col-form-label">Street Name</label>
+                    <div><span asp-validation-for="@Model.School.StreetName" class="text-danger"></span></div>
+                    <input asp-for="@Model.School.StreetName" type="text" class="form-control" placeholder="Street Name">
+                </div>
+
+                <div class="col-md-12">
+                    <label asp-for="@Model.School.StreetNumber" class="col-form-label">Street Number</label>
+                    <div><span asp-validation-for="@Model.School.StreetNumber" class="text-danger"></span></div>
+                    <input asp-for="@Model.School.StreetNumber" type="number" class="form-control" placeholder="Street Number">
+                </div>
+
+                <div class="col-md-12">
+                    <label asp-for="@Model.School.City" class="col-form-label">City</label>
+                    <div><span asp-validation-for="@Model.School.City" class="text-danger"></span></div>
+                    <input asp-for="@Model.School.City" type="text" class="form-control" placeholder="City">
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="@Model.School.Suburb" class="col-form-label">Suburb</label>
+                    <div><span asp-validation-for="@Model.School.Suburb" class="text-danger"></span></div>
+                    <input asp-for="@Model.School.Suburb" type="text" class="form-control" placeholder="Suburb">
+                </div>  
+                <div class="col-md-12">
+                    <label asp-for="@Model.School.Zip" class="col-form-label">Zip</label>
+                    <div><span asp-validation-for="@Model.School.Zip" class="text-danger"></span></div>
+                    <input asp-for="@Model.School.Zip" type="text" class="form-control" placeholder="Zip">
+                </div>
+                
+
+                  <div class="row mb-5">
+                      <div class="col-sm-8">
+                          <div class="text-center">
+                              <button type="submit" class="btn btn-primary">Save School</button>
+                              <a asp-action="Settings" asp-controller="Settings" class="btn btn-secondary">Cancel</a>
+                          </div>
+                      </div>                                 
+                  </div>
+                </form>
+
+            </div>
+          </div>
+
+        </div>
+</section>

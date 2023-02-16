@@ -1,0 +1,102 @@
+@model AppealsViewModel
+
+@inject SignInManager<User> signInManager;
+@inject UserManager<User> userManager;
+
+@{
+    ViewData["Title"] = "Manage Appeals";
+    Layout = "_Layout";
+
+    var userId = userManager.GetUserId(User);
+    User user_id = await userManager.FindByIdAsync(userId);
+}
+
+<div class="pagetitle">
+    <h1>Appeals Status</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+            <li class="breadcrumb-item active"> Appeals Status</li>
+        </ol>
+    </nav>
+</div>
+
+<section>
+     <div class="col-lg-10 center_c">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Appeals Status</h5>
+
+                <table class="table">
+                    <thead>
+                        <th>#</th>                        
+                        <th>Applicant</th>
+                        <th>Appeal Reason</th>
+                        <th>Appeal Date</th> 
+                        <th>Appeal Status</th>   
+                        <th class="text-info">Action</th>                  
+                    </thead>
+                    <tbody>
+                    
+
+                    @{
+
+                        var appealApps = from appeals in Model.Appeals 
+                                    join apps in Model.Applications
+                                    on appeals.ApplicationID equals apps.ApplicationID
+                                    join appReason in Model.AppealReasons
+                                    on appeals.AppealReasonID equals appReason.AppealReasonID
+                                    join status in Model.Statuses
+                                    on appeals.StatusID equals status.StatusID
+                                    select new {
+                                        appeals.ApplicationID,
+                                        appeals.AppealID,
+                                        appeals.AppealDate,
+                                        appeals.AppealReasonID,
+                                        appeals.StatusID,
+                                        apps.AccountID,
+                                        apps.Name,
+                                        appReason.AppealReasonName,
+                                        status.StatusName
+
+                                    };
+
+                    }
+
+                    @if( Model.Appeals != null && Model.Appeals.Count() != 0)
+                    {
+                        @foreach (var item in appealApps)
+                        {
+                            <tr>
+                                <td>@item.AppealID</td>
+                                <td>@item.Name</td>                                
+                                <td>@item.AppealReasonName</td>
+                                <td>@item.AppealDate</td>
+                                <td>@item.StatusName</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                            <span class="col-sm-4 col-md-4 col-lg-4"  style="margin: 0 auto; float: none;">
+                                                <a asp-action="Edit" class="btn btn-sm" asp-route-AppealID="@item.AppealID">
+                                                    <i class="bi-pencil" style="color: #00675A;"></i>
+                                                </a>
+                                            </span>
+                                            
+                                        </div>
+                                    </div>                                       
+                                        
+                                </td>
+                              
+                            </tr>
+                        }
+                    }
+                    </tbody>
+
+                </table>
+
+            </div>
+          </div>
+
+        </div>
+</section>
