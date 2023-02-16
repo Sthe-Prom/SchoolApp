@@ -22,7 +22,7 @@ namespace SchoolApp.Models
         [Required(ErrorMessage ="Please Enter Your Email")]
         public string Gender { get; set; }
 
-        [Required(ErrorMessage ="Please Enter Your Cell")]        
+        [Required(ErrorMessage ="Please Enter Your Cell Number")]        
         public string Cell { get; set; }
        
         [Required(ErrorMessage ="Please Select unit logo")]
