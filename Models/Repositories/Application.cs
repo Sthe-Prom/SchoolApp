@@ -10,7 +10,7 @@ namespace SchoolApp.Models
     
     public class Application
     {
-        [Key]
+        //[Key]
         public int ApplicationID { get; set; }
 
         [Required(ErrorMessage ="Please Enter Your Name")]
